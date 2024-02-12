@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <link type="text/css" rel="stylesheet" href="my.css">
+  <meta charset="utf-8">
+</head>
+
+<body>
+
+  <ul>
+    <li>Кликните на div ниже, чтобы отредактировать текст.</li>
+    <li>Нажатие на Enter или потеря фокуса с ввода сохранят содержимое.</li>
+  </ul>
+
+  HTML-код разрешён.
+
+  <div id="view" class="view">Текст</div>
+
+  <script>
+var viewDiv = document.getElementById("view");
+var editTextArea = document.createElement("textarea");
+editTextArea.className = "edit";
+editTextArea.style.display = "none";
+editTextArea.value = localStorage.getItem("savedText") || viewDiv.textContent;
+
+viewDiv.parentNode.insertBefore(editTextArea, viewDiv);
+
+viewDiv.addEventListener("click", function() {
+  viewDiv.style.display = "none";
+  editTextArea.style.display = "block";
+  editTextArea.focus();
+});
+
+editTextArea.addEventListener("blur", function() {
+  editTextArea.style.display = "none";
+  viewDiv.style.display = "block";
+  viewDiv.textContent = editTextArea.value;
+  localStorage.setItem("savedText", editTextArea.value);
+});
+
+editTextArea.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    editTextArea.style.display = "none";
+    viewDiv.style.display = "block";
+    viewDiv.textContent = editTextArea.value;
+    localStorage.setItem("savedText", editTextArea.value);
+  }
+});
+
+  </script>
+
+</body>
+</html>
